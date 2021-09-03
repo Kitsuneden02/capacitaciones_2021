@@ -48,7 +48,7 @@ while True:
     # Captura la tecla que está siendo apretada y almacena su valor en key
     key = cv2.waitKey(30)
 
-    # Si la tecla es Esc, se sale del loop y termina el programa
+    # Si la tecla es Esc, se sale del loop y termina el programa.
     if key == 27:
         break
 
