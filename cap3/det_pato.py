@@ -55,7 +55,7 @@ if __name__ == '__main__':
     else:
         env = gym.make(args.env_name)
 
-    # Se reinicia el environment
+    # Se reinicia el environment.
     env.reset()
 
     # Parametros para el detector de patos
