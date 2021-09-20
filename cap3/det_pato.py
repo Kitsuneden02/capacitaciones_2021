@@ -55,7 +55,7 @@ if __name__ == '__main__':
     else:
         env = gym.make(args.env_name)
 
-    # Se reinicia el environment.
+    # Se reinicia el environment
     env.reset()
 
     # Parametros para el detector de patos
@@ -110,6 +110,7 @@ if __name__ == '__main__':
         img_out = cv2.dilate(img_out, kernel, iterations = 2)
         # Busca contornos de blobs
         # https://docs.opencv.org/trunk/d3/d05/tutorial_py_table_of_contents_contours.html
+
         contours, hierarchy = cv2.findContours(mask, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
         # Iterar sobre contornos y dibujar bounding box de los patos
@@ -121,6 +122,12 @@ if __name__ == '__main__':
                 x,y,w,h = cv2.boundingRect(cnt)
                 #Dibujar rectangulo en el frame original
                 cv2.rectangle(obs, (x, y), (x+w, y+h), (255,0,0), 2)
+
+        # Se muestra en una ventana llamada "patos" la observación del simulador
+        # con los bounding boxes dibujados
+        cv2.imshow('patos', cv2.cvtColor(obs, cv2.COLOR_RGB2BGR))
+        # Se muestra en una ventana llamada "filtrado" la imagen filtrada
+        cv2.imshow('filtrado', cv2.cvtColor((img_out), cv2.COLOR_RGB2BGR))
 
 
     # Se cierra el environment y termina el programa
