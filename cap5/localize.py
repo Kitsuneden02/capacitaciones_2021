@@ -58,7 +58,7 @@ if __name__ == '__main__':
                             debug=0)
 
     # valor de f encontrado en el desafio anterior
-    f = 1
+    f = 862.5
     
     h = 0.042
     area = -1
@@ -82,27 +82,38 @@ if __name__ == '__main__':
             env.reset()
 
         # convertir imagen a escala de grises
-
+        img_gris = cv2.cvtColor(obs, cv2.COLOR_BGR2GRAY)
         # detectar los tags
         tags = []
+        tags = at_detector.detect(img_gris, estimate_tag_pose=False, camera_params=None, tag_size=None)
         for tag in tags:
             # obtener esquinas del tag
-
+            (x1,y1,x2,y2) = tag.corners
+            x1 = (int(x1[0]), int(x1[1]))
+            y1 = (int(y1[0]), int(y1[1]))
+            x2 = (int(x2[0]), int(x2[1]))
+            y2 = (int(y2[0]), int(y2[1]))
+            print(y1)
+            print(y2)
             # calcular p usando las esquinas encontradas (la altura de la deteccion)
-            p = 0
+            p = y1[1]-y2[1]
 
             # calcular la distancia desde el robot hasta la deteccion
-            dist = 0
-
+            dist = f*h/p
+            print(dist)
             if dist <= 1:
                 #si se esta cerca del tag, asignar su id a la variable area
+                area = tag.tag_id
                 pass
 
             #dibujar la deteccion en la imagen
-            
+            cv2.line(obs, x1, y1, (0, 255, 0), 2)
+            cv2.line(obs, y1, x2, (0, 255, 0), 2)
+            cv2.line(obs, x2, y2, (0, 255, 0), 2)
+            cv2.line(obs, y2, x1, (0, 255, 0), 2)
             
         print(f"ubicacion actual: area {area}")
         cv2.imshow('patos', cv2.cvtColor(obs, cv2.COLOR_RGB2BGR))
-
+        cv2.imshow('gris', img_gris)
     # Se cierra el environment y termina el programa
     env.close()
